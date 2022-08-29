@@ -1,0 +1,56 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <title>支付链网站</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <meta name="theme-color" content="#fafafa">
+</head>
+<script src="./js/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/custom/loginverify",
+            contentType: "application/json",
+            type: "post",
+            success: function (data) {
+                if (data.data == 0) {
+                    $("#islogin").text("当前 未 登录");
+                } else {
+                    $("#islogin").text("当前 已 登录");
+                }
+            }
+        })
+        $("#login").click(function () {
+            window.location.href = "/custom/login?back=" + encodeURIComponent(location.href)
+        })
+        $("#logout").click(function () {
+            $.ajax({
+                url: "/custom/logout",
+                contentType: "application/json",
+                type: "post",
+                success: function (data) {
+                    window.location.href = "/"
+                }
+            })
+        })
+    });
+</script>
+
+<body>
+
+<h2>支付链B</h2>
+<p id="islogin"></p>
+<button id="login">登录</button>
+<button id="logout">注销</button>
+</body>
+
+</html>
