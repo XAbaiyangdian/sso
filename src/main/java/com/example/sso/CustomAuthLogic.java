@@ -1,4 +1,4 @@
-package com.example;
+package com.example.sso;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
