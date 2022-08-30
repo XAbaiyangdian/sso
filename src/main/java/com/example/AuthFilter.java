@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.sso.CustomAuthLogic;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

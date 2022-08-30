@@ -1,12 +1,9 @@
-package com.example;
+package com.example.sso;
 
 import com.alibaba.fastjson.JSON;
 import com.example.common.RestResp;
-import com.example.sso.SsoSignUtil;
-import com.example.sso.SsoConsts;
 import com.example.sso.request.SsoLogoutDto;
 import com.example.sso.response.SsoResult;
-import com.example.sso.SsoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
