@@ -22,11 +22,10 @@
             contentType: "application/json",
             type: "post",
             success: function (data) {
-                if (data.data == 0) {
-                    $("#islogin").text("当前 未 登录");
-                } else {
-                    $("#islogin").text("当前 已 登录");
-                }
+                $("#islogin").text("当前 已 登录");
+            },
+            error: function () {
+                $("#islogin").text("当前 未 登录");
             }
         })
         $("#login").click(function () {

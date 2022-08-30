@@ -2,12 +2,14 @@ package com.example;
 
 import com.alibaba.fastjson.JSON;
 import com.example.common.RestResp;
+import com.example.sso.SsoSignUtil;
 import com.example.sso.SsoConsts;
-import com.example.sso.SsoLogoutDto;
-import com.example.sso.SsoServerResult;
+import com.example.sso.request.SsoLogoutDto;
+import com.example.sso.response.SsoResult;
 import com.example.sso.SsoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -28,9 +31,18 @@ public class CustomController {
     @Resource
     private CustomAuthLogic customAuthLogic;
 
+    @Value("${custom.clientCode}")
+    private String clientCode;
+    @Value("${custom.clientSecretkey}")
+    private String clientSecretkey;
+    @Value("${custom.redirect.url}")
+    private String customRedirectUrl;
+    @Value("${custom.logoutcall.url}")
+    private String customLogoutCallUrl;
+
     @PostMapping("/custom/loginverify")
-    public RestResp loginverify(HttpServletRequest request) {
-        return customAuthLogic.isLogin(request) ? RestResp.success(1) : RestResp.success(0);
+    public RestResp loginverify() {
+        return RestResp.success();
     }
 
     //客户端登陆接口
@@ -48,15 +60,15 @@ public class CustomController {
 
         //2. 客户端登陆 重定向到ssoserver
         if (StringUtils.isBlank(ticket)) {
-            String serverAuthUrl = ssoService.buildServerAuthUrl(back);
+            String serverAuthUrl = ssoService.buildServerAuthUrl(customRedirectUrl, back);
             response.sendRedirect(serverAuthUrl);
         } else {
-            //3. ssoserver登陆后重定向回客户端登陆接口
-            SsoServerResult ssoServerResult = ssoService.checkTicket(ticket);
-            if (!ssoServerResult.isSuccess()) {
-                throw new Exception(ssoServerResult.getMsg());
+            //3. 在ssoserver登陆后，携带ticket重定向回客户端登陆接口
+            SsoResult ssoResult = ssoService.checkTicket(ticket, customLogoutCallUrl, clientCode, clientSecretkey);
+            if (!ssoResult.isSuccess()) {
+                throw new Exception(ssoResult.getMsg());
             }
-            String loginId = (String) ssoServerResult.getData();
+            String loginId = (String) ssoResult.getData();
             //获取到loginId后 以下为客户端自定义的前后端保持会话方案，这里仅为例子。
             String token = UUID.randomUUID().toString();
 
@@ -71,13 +83,10 @@ public class CustomController {
     //被各客户端自己的用户调用
     @PostMapping("/custom/logout")
     public RestResp logout(HttpServletRequest request) {
-        if (!customAuthLogic.isLogin(request)) {
-            return RestResp.fail("非登陆状态");
-        }
         String token = customAuthLogic.getCustomTokenFromCookie(request);
         String loginId = customAuthLogic.deleteSessionByToken(token);
         if (StringUtils.isNotBlank(loginId)) {
-            ssoService.logout(loginId);
+            ssoService.logout(loginId, clientCode, clientSecretkey);
         }
         return RestResp.success();
     }
@@ -87,13 +96,25 @@ public class CustomController {
     @PostMapping("/custom/logoutCall")
     public RestResp logoutCall(SsoLogoutDto ssoLogoutDto) {
         log.info("logoutCall: " + JSON.toJSONString(ssoLogoutDto));
-        ssoService.logoutCall(ssoLogoutDto);
+        if (ssoLogoutDto.getTimestamp() < System.currentTimeMillis() - 10 * 1000) {
+            log.error("logoutCall: " + "时间戳校验失败");
+            return RestResp.fail("时间戳校验失败");
+        }
+        if (!SsoSignUtil.checkSign(ssoLogoutDto.toSignMap(), ssoLogoutDto.getSignature(), clientSecretkey)) {
+            log.error("logoutCall: " + "签名校验失败");
+            return RestResp.fail("签名校验失败");
+        }
         customAuthLogic.deleteSessionByLoginId(ssoLogoutDto.getLoginId());
         return RestResp.success();
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public ModelAndView index() {
         return new ModelAndView("index.html");
+    }
+
+    @RequestMapping("/")
+    public void defaultPage(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/index");
     }
 }

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-//各支付链自定义实现用户会话逻辑
+//各支付链自定义实现用户会话、权限校验逻辑
 @Service
 public class CustomAuthLogic {
     private static final String tokenName = "custom_token";

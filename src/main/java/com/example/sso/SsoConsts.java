@@ -15,6 +15,8 @@ public class SsoConsts {
         public static String ssoAuth = "/sso/auth";
         public static String ssoCheckTicket = "/sso/checkTicket";
         public static String ssoLogout = "/sso/logout";
+        public static String ssoPushUser = "/sso/pushUser";
+        public static String ssoUserInfo = "/sso/userInfo";
 
         public Api() {
         }

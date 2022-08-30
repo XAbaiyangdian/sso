@@ -21,7 +21,7 @@ public class OkHttpClient {
 //    }
 
     public static String postForm(String url, Map<String, Object> params) {
-        MultipartBody.Builder builder = new MultipartBody.Builder();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
         }
