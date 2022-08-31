@@ -1,28 +1,27 @@
 package com.example.sso.response;
 
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 public class SsoResult {
-    public static final int CODE_SUCCESS = 200;
-    public static final int CODE_ERROR = 500;
-    private Integer code;
-    private String msg;
+    private int status;
+    private String message;
     private Object data;
 
-    public Boolean isSuccess() {
-        return this.code != null && this.code == CODE_SUCCESS;
+    public boolean isSuccess() {
+        return this.status == 1;
     }
 
-    public static SsoResult error() {
-        return new SsoResult(CODE_ERROR);
+    public <T> T parseData(Class<T> clazz) {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof String) {
+            return JSON.parseObject((String) data, clazz);
+        }
+        return JSON.parseObject(JSON.toJSONString(data), clazz);
     }
-
-    public SsoResult(Integer code) {
-        this.code = code;
-    }
-
-
 }

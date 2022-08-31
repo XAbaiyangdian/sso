@@ -1,5 +1,6 @@
 package com.example.common;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 
@@ -16,16 +17,8 @@ public class OkHttpClient {
             .writeTimeout(10L, TimeUnit.SECONDS)
             .build();
 
-//    public static String get(String url) {
-//        return execute(new Request.Builder().url(url).get().build());
-//    }
-
-    public static String postForm(String url, Map<String, Object> params) {
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
-        }
-        MultipartBody body = builder.build();
+    public static String post(String url, String jsonString) {
+        RequestBody body = RequestBody.create(jsonString, MediaType.parse("application/json; charset=utf-8"));
         return execute(new Request.Builder().url(url).post(body).build());
     }
 

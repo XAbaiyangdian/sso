@@ -8,9 +8,8 @@ import com.example.sso.request.SsoCheckTicketDto;
 import com.example.sso.request.SsoLogoutDto;
 import com.example.sso.request.UserInfoDto;
 import com.example.sso.response.SsoResult;
-import com.example.sso.response.UserInfo;
+import com.example.sso.response.UserInfoResp;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -36,76 +35,47 @@ public class SsoService {
         ssoCheckTicketDto.setSignature(SsoSignUtil.sign(ssoCheckTicketDto.toSignMap(), clientSecretkey));
 
         String checkTicketUrl = ssoServerUrl + SsoConsts.Api.ssoCheckTicket;
-        String result = OkHttpClient.postForm(checkTicketUrl, ssoCheckTicketDto.toMap());
+        String result = OkHttpClient.post(checkTicketUrl, ssoCheckTicketDto.toJsonString());
         log.info("checkTicket result: " + result);
-        if (StringUtils.isBlank(result)) {
-            return null;
-        }
-        try {
-            return JSON.parseObject(result, SsoResult.class);
-        } catch (Exception e) {
-            return null;
-        }
+        return JSON.parseObject(result, SsoResult.class);
     }
 
-    public UserInfo getUserInfo(String loginId, String clientCode, String clientSecretkey) {
-        UserInfoDto userInfoDto = new UserInfoDto(loginId);
+    public UserInfoResp getUserInfo(String userId, String clientCode, String clientSecretkey) {
+        UserInfoDto userInfoDto = new UserInfoDto(userId);
         userInfoDto.setTimestamp(System.currentTimeMillis());
         userInfoDto.setClientCode(clientCode);
         userInfoDto.setSignature(SsoSignUtil.sign(userInfoDto.toSignMap(), clientSecretkey));
 
         String userInfoUrl = ssoServerUrl + SsoConsts.Api.ssoUserInfo;
-        String result = OkHttpClient.postForm(userInfoUrl, userInfoDto.toMap());
+        String result = OkHttpClient.post(userInfoUrl, userInfoDto.toJsonString());
         log.info("getUserInfo result: " + result);
-        if (StringUtils.isBlank(result)) {
-            return null;
-        }
         SsoResult ssoResult = JSON.parseObject(result, SsoResult.class);
         if (!ssoResult.isSuccess() || ssoResult.getData() == null) {
             return null;
         }
-        try {
-            return JSON.parseObject(JSON.toJSONString(ssoResult.getData()), UserInfo.class);
-        } catch (Exception e) {
-            return null;
-        }
+        return JSON.parseObject(JSON.toJSONString(ssoResult.getData()), UserInfoResp.class);
     }
 
-    public SsoResult logout(String loginId, String clientCode, String clientSecretkey) {
-        SsoLogoutDto ssoLogoutDto = new SsoLogoutDto(loginId);
+    public void logout(String userId, String clientCode, String clientSecretkey) {
+        SsoLogoutDto ssoLogoutDto = new SsoLogoutDto(userId);
         ssoLogoutDto.setClientCode(clientCode);
         ssoLogoutDto.setTimestamp(System.currentTimeMillis());
         ssoLogoutDto.setSignature(SsoSignUtil.sign(ssoLogoutDto.toSignMap(), clientSecretkey));
 
         String logoutUrl = ssoServerUrl + SsoConsts.Api.ssoLogout;
-        String result = OkHttpClient.postForm(logoutUrl, ssoLogoutDto.toMap());
+        String result = OkHttpClient.post(logoutUrl, ssoLogoutDto.toJsonString());
         log.info("logout result: " + result);
-        if (StringUtils.isBlank(result)) {
-            return SsoResult.error();
-        }
-        try {
-            return JSON.parseObject(result, SsoResult.class);
-        } catch (Exception e) {
-            return null;
-        }
     }
 
-    public SsoResult pushUser(String mobilephone, String uscc, String cfcaKeyId, String clientCode, String clientSecretkey) {
-        PushUserDto pushUserDto = new PushUserDto(mobilephone, uscc, cfcaKeyId);
+    public SsoResult pushUser(String mobilephone, String uscc, String cfcaKeyId, String realName, String idCard, String clientCode, String clientSecretkey) {
+        PushUserDto pushUserDto = new PushUserDto(mobilephone, uscc, cfcaKeyId, realName, idCard);
         pushUserDto.setTimestamp(System.currentTimeMillis());
         pushUserDto.setClientCode(clientCode);
         pushUserDto.setSignature(SsoSignUtil.sign(pushUserDto.toSignMap(), clientSecretkey));
 
         String pushUserUrl = ssoServerUrl + SsoConsts.Api.ssoPushUser;
-        String result = OkHttpClient.postForm(pushUserUrl, pushUserDto.toMap());
+        String result = OkHttpClient.post(pushUserUrl, pushUserDto.toJsonString());
         log.info("pushUser result: " + result);
-        if (StringUtils.isBlank(result)) {
-            return SsoResult.error();
-        }
-        try {
-            return JSON.parseObject(result, SsoResult.class);
-        } catch (Exception e) {
-            return null;
-        }
+        return JSON.parseObject(result, SsoResult.class);
     }
 }

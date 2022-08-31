@@ -3,13 +3,11 @@ package com.example.sso.response;
 import lombok.Data;
 
 @Data
-public class UserInfo {
+public class CheckTicketResp {
 
-    private String loginId;
+    private String userId;
 
     private String mobilephone;
-
-    private String uscc;
 
     private String cfcaKeyId;
 }

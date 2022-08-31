@@ -22,8 +22,9 @@ public class BaseSignRequest {
         map.remove("signature");
         return map;
     }
-    public Map<String, Object> toMap() {
-        String s = JSON.toJSONString(this, SerializerFeature.IgnoreNonFieldGetter, SerializerFeature.WriteMapNullValue);
-        return JSON.parseObject(s, Map.class);
+    public String toJsonString() {
+        return JSON.toJSONString(this, SerializerFeature.IgnoreNonFieldGetter, SerializerFeature.WriteMapNullValue);
     }
+
+
 }

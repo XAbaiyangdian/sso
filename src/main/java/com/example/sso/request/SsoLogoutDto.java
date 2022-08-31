@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SsoLogoutDto extends BaseSignRequest{
 
-    private String loginId;
+    private String userId;
 
-    public SsoLogoutDto(String loginId) {
-        this.loginId = loginId;
+    public SsoLogoutDto(String userId) {
+        this.userId = userId;
     }
 }

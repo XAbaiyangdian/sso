@@ -14,8 +14,8 @@ import java.util.stream.Stream;
 @Service
 public class CustomAuthLogic {
     private static final String tokenName = "custom_token";
-    private Map<String, String> tokenLoginIdMap = new HashMap<>();
-    private Map<String, String> loginIdtokenMap = new HashMap<>();
+    private Map<String, String> tokenUserIdMap = new HashMap<>();
+    private Map<String, String> userIdtokenMap = new HashMap<>();
 
     //例子中使用cookie保存登陆凭证，各支付链可自定义实现。
     public String getCustomTokenFromCookie(HttpServletRequest request) {
@@ -35,27 +35,27 @@ public class CustomAuthLogic {
         response.addCookie(cookie);
     }
 
-    public void saveSession(String token, String loginId) {
-        tokenLoginIdMap.put(token, loginId);
-        loginIdtokenMap.put(loginId, token);
+    public void saveSession(String token, String userId) {
+        tokenUserIdMap.put(token, userId);
+        userIdtokenMap.put(userId, token);
     }
 
     public String deleteSessionByToken(String token) {
-        String loginId = tokenLoginIdMap.get(token);
-        tokenLoginIdMap.remove(token);
-        loginIdtokenMap.remove(loginId);
-        return loginId;
+        String userId = tokenUserIdMap.get(token);
+        tokenUserIdMap.remove(token);
+        userIdtokenMap.remove(userId);
+        return userId;
     }
 
-    public String deleteSessionByLoginId(String loginId) {
-        String token = loginIdtokenMap.get(loginId);
-        loginIdtokenMap.remove(loginId);
-        tokenLoginIdMap.remove(token);
+    public String deleteSessionByUserId(String userId) {
+        String token = userIdtokenMap.get(userId);
+        userIdtokenMap.remove(userId);
+        tokenUserIdMap.remove(token);
         return token;
     }
 
     public Boolean isLogin(HttpServletRequest request) {
         String token = getCustomTokenFromCookie(request);
-        return StringUtils.isNotBlank(token) && tokenLoginIdMap.containsKey(token);
+        return StringUtils.isNotBlank(token) && tokenUserIdMap.containsKey(token);
     }
 }
