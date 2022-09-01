@@ -25,7 +25,8 @@
                 $("#islogin").text("当前 已 登录");
             },
             error: function () {
-                $("#islogin").text("当前 未 登录");
+                // $("#islogin").text("当前 未 登录");
+                window.location.href = "/custom/login?back=" + encodeURIComponent(location.href)
             }
         })
         $("#login").click(function () {
