@@ -1,4 +1,4 @@
-package com.example.sso.response;
+package com.example.sso.dto.response;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ public class CheckTicketResp {
 
     private String userId;
 
-    private String mobilephone;
+    private String mobile;
 
     private String cfcaKeyId;
 }

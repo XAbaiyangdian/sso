@@ -1,4 +1,4 @@
-package com.example.sso.request;
+package com.example.sso.dto.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

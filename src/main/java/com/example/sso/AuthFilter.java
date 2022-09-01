@@ -1,6 +1,6 @@
-package com.example;
+package com.example.sso;
 
-import com.example.sso.CustomAuthLogic;
+import com.example.sso.TokenUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -15,7 +15,7 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 public class AuthFilter implements Filter {
 
     @Resource
-    private CustomAuthLogic customAuthLogic;
+    private TokenUtil tokenUtil;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -23,7 +23,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
         //一些接口需要放过登陆校验
-        if (!skipAuth(httpServletRequest.getRequestURI()) && !customAuthLogic.isLogin(httpServletRequest)) {
+        if (!skipSSOCheck(httpServletRequest.getRequestURI()) && !tokenUtil.isLogin(httpServletRequest)) {
             httpServletResponse.setStatus(SC_UNAUTHORIZED);
             httpServletResponse.getOutputStream().write(1);
             return;
@@ -31,7 +31,7 @@ public class AuthFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    public Boolean skipAuth(String uri) {
+    public Boolean skipSSOCheck(String uri) {
         return "/".equals(uri) ||
                 "/index".equals(uri) ||
                 "/custom/login".equals(uri) ||
