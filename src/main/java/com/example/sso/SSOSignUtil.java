@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class SsoSignUtil {
+public class SSOSignUtil {
 
     public static String sign(Map map, String secretKey) {
         String linkString = createLinkString(map);

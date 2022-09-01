@@ -1,15 +1,15 @@
-package com.example.sso.request;
+package com.example.sso.dto.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SsoLogoutDto extends BaseSignRequest{
+public class SSOLogoutDto extends BaseSignRequest{
 
     private String userId;
 
-    public SsoLogoutDto(String userId) {
+    public SSOLogoutDto(String userId) {
         this.userId = userId;
     }
 }

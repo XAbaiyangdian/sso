@@ -1,17 +1,17 @@
-package com.example.sso.request;
+package com.example.sso.dto.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SsoCheckTicketDto extends BaseSignRequest{
+public class SSOCheckTicketDto extends BaseSignRequest{
 
     private String ticket;
 
     private String ssoLogoutCall;
 
-    public SsoCheckTicketDto(String ticket, String ssoLogoutCall) {
+    public SSOCheckTicketDto(String ticket, String ssoLogoutCall) {
         this.ticket = ticket;
         this.ssoLogoutCall = ssoLogoutCall;
     }

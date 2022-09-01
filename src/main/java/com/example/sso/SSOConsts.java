@@ -1,6 +1,6 @@
 package com.example.sso;
 
-public class SsoConsts {
+public class SSOConsts {
     public static final class ParamName {
         public static String redirect = "redirect";
         public static String ticket = "ticket";
@@ -21,4 +21,5 @@ public class SsoConsts {
         public Api() {
         }
     }
+    public static int TOKEN_TIMEOUT = 10 * 1000;
 }
