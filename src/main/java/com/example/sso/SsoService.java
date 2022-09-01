@@ -53,7 +53,7 @@ public class SsoService {
         if (!ssoResult.isSuccess() || ssoResult.getData() == null) {
             return null;
         }
-        return JSON.parseObject(JSON.toJSONString(ssoResult.getData()), UserInfoResp.class);
+        return ssoResult.parseData(UserInfoResp.class);
     }
 
     public void logout(String userId, String clientCode, String clientSecretkey) {
