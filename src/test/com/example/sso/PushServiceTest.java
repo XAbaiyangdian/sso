@@ -25,5 +25,6 @@ public class PushServiceTest {
         String idCard="420682198711075511";
         SSOResult ssoResult = pushService.pushUser(mobile, uscc, cfcaKeyId, realName, idCard);
         assert ssoResult.isSuccess();
+        Object userId = ssoResult.getData();
     }
 }
