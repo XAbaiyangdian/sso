@@ -35,7 +35,7 @@
     
 ### ssoserver接口文档
 
-- 统一登录
+#### 统一登录
    
     
     url: /sso/auth
@@ -47,7 +47,7 @@
     
     
 
-- 检查ticket
+#### 检查ticket
 
     
     url: /sso/checkTicket
@@ -70,7 +70,7 @@
             }
         }
 
-- 统一登出
+#### 统一登出
 
 
     url: /sso/logout
@@ -92,7 +92,7 @@
         
     
         
-- 推送用户
+#### 推送用户
 
 
     url: /sso/pushUser
@@ -114,7 +114,7 @@
              "data": userId
         }
 
-- 获取用户详情
+#### 获取用户详情
 
 
     url: /sso/userInfo
