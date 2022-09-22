@@ -18,12 +18,13 @@ public class PushServiceTest {
     private PushService pushService;
     @Test
     public void pushUser() {
-        String mobile = "13211112222";
+        String mobile = "13211112223";
+        String company = "百度网络科技有限公司";
         String uscc = "91310000775785552L";
         String cfcaKeyId="xxxxxxxxxx";
         String realName="李彦宏";
         String idCard="420682198711075511";
-        SSOResult ssoResult = pushService.pushUser(mobile, uscc, cfcaKeyId, realName, idCard);
+        SSOResult ssoResult = pushService.pushUser(mobile, company, uscc, cfcaKeyId, realName, idCard);
         assert ssoResult.isSuccess();
         Object userId = ssoResult.getData();
     }
