@@ -100,7 +100,7 @@
     content-type: application/json
     params: 
         mobile String 必须
-        company Strubg 必须
+        company String 必须
         uscc String 必须
         cfcaKeyId String 必须
         realName String 必须
