@@ -20,8 +20,8 @@ public class PushService {
     @Value("${ssoclient.clientSecretKey}")
     private String clientSecretKey;
 
-    public SSOResult pushUser(String mobile, String uscc, String cfcaKeyId, String realName, String idCard) {
-        PushUserDto pushUserDto = new PushUserDto(mobile, uscc, cfcaKeyId, realName, idCard);
+    public SSOResult pushUser(String loginName, String mobile, String company, String uscc, String cfcaKeyId, String realName, String idCard) {
+        PushUserDto pushUserDto = new PushUserDto(loginName, mobile, company, uscc, cfcaKeyId, realName, idCard);
         pushUserDto.setTimestamp(System.currentTimeMillis());
         pushUserDto.setClientCode(clientCode);
         pushUserDto.setSignature(SSOSignUtil.sign(pushUserDto.toSignMap(), clientSecretKey));

@@ -65,6 +65,8 @@
             "message": "success", 
             "data": {
                 "userId": "", 
+                "loginName": "",
+                "uscc": "",
                 "mobile": "", 
                 "cfcaKeyId": ""
             }
@@ -99,9 +101,11 @@
     type: POST
     content-type: application/json
     params: 
-        mobile String 必须
+        loginName String 必须
+        company String 必须
         uscc String 必须
-        cfcaKeyId String 必须
+        mobile String 必须
+        cfcaKeyId String 非必须
         realName String 必须
         idCard String 必须
         timestamp Long 必须
@@ -131,8 +135,10 @@
              "message": "success", 
              "data": {
                   "userId": "",
+                  "loginName": "",
                   "mobile": "",
                   "cfcaKeyId": "",
+                  "company": "",
                   "uscc": "",
                   "realName": "",
                   "idCard": "",
