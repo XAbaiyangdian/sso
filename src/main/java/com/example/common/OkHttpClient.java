@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -14,7 +16,7 @@ public class OkHttpClient {
     private static final okhttp3.OkHttpClient okHttpClient = new okhttp3.OkHttpClient.Builder()
             .connectTimeout(10L, TimeUnit.SECONDS)
             .readTimeout(10L, TimeUnit.SECONDS)
-            .writeTimeout(10L, TimeUnit.SECONDS)
+            .writeTimeout(10L, TimeUnit.SECONDS).hostnameVerifier(new NoHostnameVerifier())
             .build();
 
     public static String post(String url, String jsonString) {
@@ -39,6 +41,14 @@ public class OkHttpClient {
             }
         }
         return result;
+    }
+
+    public static class NoHostnameVerifier implements HostnameVerifier {
+
+        @Override
+        public boolean verify(String s, SSLSession sslSession) {
+            return true;
+        }
     }
 
 }

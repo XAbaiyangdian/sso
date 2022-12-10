@@ -20,4 +20,6 @@ public class UserInfoResp {
     private String realName;
     //实名信息 身份证号
     private String idCard;
+    //总包、分包、总包,分包
+    private String companyRole;
 }

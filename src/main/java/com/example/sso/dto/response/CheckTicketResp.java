@@ -15,4 +15,8 @@ public class CheckTicketResp {
     private String mobile;
     //u盾序列还
     private String cfcaKeyId;
+    //公司名称
+    private String company;
+    //总包 分包  总包,分包
+    private String companyRole;
 }

@@ -17,36 +17,20 @@ public class PushServiceTest {
     @Resource
     private PushService pushService;
 
-//    @Test
-//    public void pushUser() {
-//        String loginName = "liyanhong";
-//        String mobile = "13211112223";
-//        String company = "百度网络科技有限公司";
-//        String uscc = "91310000775785552L";
-//        String cfcaKeyId = "xxxxxxxxxx";
-//
-//        String realName = "李彦宏";
-//        String idCard = "420682198711075511";
-//
-//        SSOResult ssoResult = pushService.pushUser(loginName, mobile, company, uscc, cfcaKeyId, realName, idCard);
-//        assert ssoResult.isSuccess();
-//        Object userId = ssoResult.getData();
-//        System.out.println(userId);
-//    }
-@Test
-public void pushUser() {
-    String loginName = "huohuo";
-    String mobile = "17611195221";
-    String company = "百度网络科技有限公司";
-    String uscc = "91310000775785552L";
-    String cfcaKeyId = "";
+    @Test
+    public void pushUser() {
+        String loginName = "liyanhong";
+        String mobile = "13211112223";
+        String company = "百度网络科技有限公司";
+        String uscc = "91310000775785552L";
+        String cfcaKeyId = "";
 
-    String realName = "李彦宏";
-    String idCard = "420682198711075511";
+        String realName = "李彦宏";
+        String idCard = "420682198711075511";
 
-    SSOResult ssoResult = pushService.pushUser(loginName, mobile, company, uscc, cfcaKeyId, realName, idCard);
-    assert ssoResult.isSuccess();
-    Object userId = ssoResult.getData();
-    System.out.println(userId);
-}
+        SSOResult ssoResult = pushService.pushUser(loginName, mobile, company, uscc, cfcaKeyId, realName, idCard);
+        assert ssoResult.isSuccess();
+        Object userId = ssoResult.getData();
+        System.out.println(userId);
+    }
 }
